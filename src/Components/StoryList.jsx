@@ -6,7 +6,7 @@ export default class StoryList extends Component {
 
   renderStories() {
     return _.map(this.props.stories, (item, index) => <Story key={index}
-      url={item}
+      url={item.url} upVotes={item.upVotes} storyKey={item.storyKey}
     />)
   }
 

@@ -1,9 +1,11 @@
 // @flow
 import * as firebase from 'firebase'
+import _ from 'lodash'
 import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import StoryList from './Components/StoryList'
+import Form from './Components/Form'
 
 
 class App extends Component {
@@ -22,8 +24,9 @@ class App extends Component {
 
   componentWillMount() {
     this.firebaseRef = firebase.database().ref().child('links')
-    this.firebaseRef.on('child_added', function (dataSnapshot) {
-      let updatedItems = this.state.items.concat(dataSnapshot.val())
+    this.firebaseRef.on('value', function (dataSnapshot) {
+      const updatedItems = _.map(dataSnapshot.val(), (item, index) => item)
+      console.log(updatedItems)
       this.setState({
         items: updatedItems,
       })
@@ -35,7 +38,6 @@ class App extends Component {
   // }
 
 
-
   render() {
     return (
       <div className="App">
@@ -43,7 +45,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Real Time News Stories</h2>
         </div>
-        <StoryList stories={this.state.items} ></StoryList>
+        <Form />
+        <StoryList stories={this.state.items} />
       </div>
     )
   }
